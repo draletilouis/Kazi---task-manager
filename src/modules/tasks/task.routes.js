@@ -6,12 +6,12 @@ const router = Router();
 
 // All task routes require authentication
 // Route to create a new task in a project
-router.post("/:projectId/tasks", authMiddleware, TaskController.createTask);
+router.post("/:workspaceId/projects/:projectId/tasks", authMiddleware, TaskController.createTask);
 // Route to get all tasks in a project
-router.get("/:projectId/tasks", authMiddleware, TaskController.getTasks);
+router.get("/:workspaceId/projects/:projectId/tasks", authMiddleware, TaskController.getTasks);
 // Route to update a task
-router.put("/:projectId/tasks/:taskId", authMiddleware, TaskController.updateTask);
+router.put("/:workspaceId/projects/:projectId/tasks/:taskId", authMiddleware, TaskController.updateTask);
 // Route to delete a task
-router.delete("/:projectId/tasks/:taskId", authMiddleware, TaskController.deleteTask);
+router.delete("/:workspaceId/projects/:projectId/tasks/:taskId", authMiddleware, TaskController.deleteTask);
 
 export default router;

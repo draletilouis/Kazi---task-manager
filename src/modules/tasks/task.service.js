@@ -1,4 +1,4 @@
-import prisma from "../../database/prisma";
+import prisma from "../../database/prisma.js";
 
 export async function createTask(userId, workspaceId, projectId, data) {
     // 1. Extract data from request body
