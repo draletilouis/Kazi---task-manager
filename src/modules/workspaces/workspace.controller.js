@@ -26,11 +26,28 @@ export async function getWorkspaces(req, res) {
     }
 }    
 
+/**
+ * Handle workspace update
+ */
 export async function updateWorkspace(req, res) {
     try {
         const userId = req.user.userId;
         const workspaceId = req.params.workspaceId;
         const result = await workspaceService.updateWorkspace(workspaceId, userId, req.body);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+/**
+ * Handle workspace deletion
+ */
+export async function deleteWorkspace(req, res) {
+    try {
+        const userId = req.user.userId;
+        const workspaceId = req.params.workspaceId;
+        const result = await workspaceService.deleteWorkspace(workspaceId, userId);
         res.status(200).json(result);
     } catch (error) {
         res.status(400).json({ error: error.message });

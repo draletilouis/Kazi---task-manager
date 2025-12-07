@@ -15,5 +15,7 @@ router.get("/", authMiddleware, WorkspaceController.getWorkspaces);
 // Route to update workspace name
 router.put("/:workspaceId", authMiddleware, WorkspaceController.updateWorkspace);
 
+// Route to delete workspace
+router.delete("/:workspaceId", authMiddleware, WorkspaceController.deleteWorkspace);
 
 export default router;

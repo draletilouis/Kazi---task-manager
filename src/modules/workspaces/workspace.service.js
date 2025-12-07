@@ -57,6 +57,10 @@ export async function getWorkspaces(userId) {
     return {workspaces}
 }
 
+/**
+ * Update workspace name
+ * Only admins and owners can update
+ */
 export async function updateWorkspace(workspaceId, userId, data) {
     const { name } = data;
 
@@ -64,7 +68,8 @@ export async function updateWorkspace(workspaceId, userId, data) {
     if (!name || name.trim().length === 0) {
         throw new Error("Workspace name is required");
     }
-    // Update workspace
+
+    // Check if user has admin or owner role
     const membership = await prisma.workspaceMember.findFirst({
         where: {
             workspaceId: workspaceId,
@@ -75,8 +80,9 @@ export async function updateWorkspace(workspaceId, userId, data) {
 
     if (!membership) {
         throw new Error("You do not have permission to update this workspace");
-    }   
+    }
 
+    // Update workspace
     const workspace = await prisma.workspace.update({
         where: { id: workspaceId },
         data: { name: name.trim() },
@@ -90,6 +96,35 @@ export async function updateWorkspace(workspaceId, userId, data) {
             ownerId: workspace.ownerId,
             createdAt: workspace.createdAt,
         }
-
     };
+}
+
+/**
+ * Delete workspace
+ * Only the owner can delete
+ */
+export async function deleteWorkspace(workspaceId, userId) {
+    // Check if user is the owner
+    const membership = await prisma.workspaceMember.findFirst({
+        where: {
+                workspaceId: workspaceId,
+                userId: userId,
+                role: 'OWNER'  }
+    });
+
+    if (!membership) {
+        throw new Error("Only the workspace owner can delete the workspace");
+    }
+
+    // Delete all workspace members first
+    await prisma.workspaceMember.deleteMany({
+        where: { workspaceId: workspaceId }
+    });
+
+    // Delete workspace
+    await prisma.workspace.delete({
+        where: { id: workspaceId },
+    });
+
+    return { message: "Workspace deleted successfully" };
 }
