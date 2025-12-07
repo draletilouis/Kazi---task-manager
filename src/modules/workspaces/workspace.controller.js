@@ -53,3 +53,32 @@ export async function deleteWorkspace(req, res) {
         res.status(400).json({ error: error.message });
     }
 }
+
+/**
+ * Handle member invitation
+ */
+export async function inviteMember(req, res) {
+    try {
+        const userId = req.user.userId;
+        const workspaceId = req.params.workspaceId;
+        const result = await workspaceService.inviteMember(workspaceId, userId, req.body);
+        res.status(201).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+/**
+ * Handle member removal
+ */
+export async function removeMember(req, res) {
+    try {
+        const removerId = req.user.userId;
+        const workspaceId = req.params.workspaceId;
+        const memberId = req.params.memberId;
+        const result = await workspaceService.removeMember(workspaceId, removerId, memberId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}

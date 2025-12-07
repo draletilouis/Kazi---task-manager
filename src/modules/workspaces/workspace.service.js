@@ -128,3 +128,99 @@ export async function deleteWorkspace(workspaceId, userId) {
 
     return { message: "Workspace deleted successfully" };
 }
+
+/**
+ * Invite a member to workspace
+ * Only admins and owners can invite
+ */
+export async function inviteMember(workspaceId, inviterId, data) {
+    const {email, role = "MEMBER"} = data;
+
+    // Validate email
+    if (!email || email.trim().length === 0) {
+        throw new Error("Email is required to invite a member");
+    }
+
+    // Check if inviter has admin or owner role
+    const inviterMembership = await prisma.workspaceMember.findFirst({
+        where: {
+            workspaceId: workspaceId,
+            userId: inviterId,
+            role: {in: ['OWNER', 'ADMIN'] }
+        }
+    });
+
+    if (!inviterMembership) {
+        throw new Error("You do not have permission to invite members to this workspace");
+    }
+
+    // Find user by email
+    const user = await prisma.user.findUnique({
+        where: { email: email.trim() }
+    });
+
+    if (!user) {
+        throw new Error("User not found with this email");
+    }
+
+    // Check if user is already a member
+    const existingMembership = await prisma.workspaceMember.findFirst({
+        where: {
+            workspaceId: workspaceId,
+            userId: user.id
+        }
+    });
+
+    if (existingMembership) {
+        throw new Error("User is already a member of this workspace");
+    }
+
+    // Add member to workspace
+    const membership = await prisma.workspaceMember.create({
+        data: {
+            workspaceId: workspaceId,
+            userId: user.id,
+            role: role
+        }
+    });
+
+    return {
+        message: "Member invited successfully",
+        member: {
+            id: membership.id,
+            userId: user.id,
+            email: user.email,
+            role: membership.role
+        }
+    };
+}
+
+export async function removeMember(workspaceId, removerId, memberId) {
+    // Check if remover has admin or owner role
+    const removerMembership = await prisma.workspaceMember.findFirst({
+        where: {
+            workspaceId: workspaceId,
+            userId: removerId,
+            role: { in: ['OWNER', 'ADMIN'] }
+        }
+    });
+
+    if (!removerMembership) {
+        throw new Error("You do not have permission to remove members from this workspace");
+    }
+    // Check if member exists
+    const membership = await prisma.workspaceMember.findFirst({
+        where: {
+            workspaceId: workspaceId,
+            userId: memberId
+        }
+    });
+    if (!membership) {
+        throw new Error("Member not found in this workspace");
+    }
+    // Remove member
+    await prisma.workspaceMember.delete({
+        where: { id: membership.id }
+    });
+    return { message: "Member removed successfully" };
+}
