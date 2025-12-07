@@ -12,7 +12,7 @@ router.post("/:workspaceId/projects", authMiddleware, ProjectController.createPr
 router.get("/:workspaceId/projects", authMiddleware, ProjectController.getProjects);
 
 // Route to update project details
-router.put("/:workspaceId/projects/:projectId", authMiddleware, ProjectController.updatedProject);
+router.put("/:workspaceId/projects/:projectId", authMiddleware, ProjectController.updateProject);
 
 // Route to delete a project
 router.delete("/:workspaceId/projects/:projectId", authMiddleware, ProjectController.deleteProject);

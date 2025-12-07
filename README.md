@@ -38,20 +38,24 @@ Built with **Node.js**, **Express**, and **Prisma ORM** — designed for scalabi
 **Workspace Management**
 * Create workspace (user becomes owner automatically)
 * List user workspaces (shows all workspaces where user is a member)
+* Update workspace name (OWNER/ADMIN only)
+* Delete workspace (OWNER only)
+* Invite members to workspace (OWNER/ADMIN only)
+* Remove members from workspace (OWNER/ADMIN only)
+* Update member roles (OWNER only)
+
+**Project Management**
+* Create projects in workspace (any member)
+* List all projects in workspace (any member)
+* Update project details (OWNER/ADMIN only)
+* Delete projects (OWNER/ADMIN only)
+* Role-based access control
 
 ---
 
 ### 🚧 Pending Features
 
-**📁 Workspace Management** *(Partial)*
-* Update workspace name
-* Delete workspace
-* Invite members to workspace
-* Remove members from workspace
-* Assign roles (Owner, Admin, Member)
-
-**📋 Project Management**
-* Create/list/update/delete projects
+**📋 Project Management** *(Partial)*
 * Assign projects to workspace members
 
 **✓ Task Management**
@@ -88,9 +92,11 @@ task-manager-api/
  │  │  ├─ workspaces/
  │  │  │  ├─ workspace.controller.js
  │  │  │  ├─ workspace.service.js
- │  │  │  ├─ workspace.routes.js
- │  │  │  └─ workspace.middleware.js
- │  │  ├─ projects/ (pending)
+ │  │  │  └─ workspace.routes.js
+ │  │  ├─ projects/
+ │  │  │  ├─ project.controller.js
+ │  │  │  ├─ project.service.js
+ │  │  │  └─ project.routes.js
  │  │  ├─ tasks/ (pending)
  │  │  └─ comments/ (pending)
  │  ├─ database/

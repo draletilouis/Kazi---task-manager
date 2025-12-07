@@ -1,3 +1,5 @@
+import prisma from "../../database/prisma.js";
+
 export async function createProject(userId, workspaceId, data) {
     
     const { name, description } = data;
@@ -65,34 +67,39 @@ export async function getProjects(workspaceId, userId) {
     return { projects };
 }
 
-export async function updateProject(projectId, userId, data) {
+export async function updateProject(workspaceId, projectId, userId, data) {
     const { name, description } = data;
 
     // Validate project name
     if (!name || name.trim().length === 0) {
         throw new Error("Project name is required");
     }
-    // Check if user has permission to update the project
-    const project = await prisma.project.findUnique({
-        where: { workspaceId: workspaceId,
+
+    // Check if user has permission to update projects (ADMIN or OWNER role)
+    const membership = await prisma.workspaceMember.findFirst({
+        where: {
+            workspaceId: workspaceId,
             userId: userId,
-            role: { in: ['OWNER', 'ADMIN']
-        },
-    }
+            role: { in: ['OWNER', 'ADMIN'] }
+        }
     });
+
     if (!membership) {
-        throw new Error("You do not have permission to update this workspace");
+        throw new Error("You do not have permission to update projects in this workspace");
     }
 
+    // Check if project exists in workspace
     const existingProject = await prisma.project.findFirst({
-        where: { 
+        where: {
             id: projectId,
             workspaceId: workspaceId
-         },
+        },
     });
+
     if (!existingProject) {
         throw new Error("Project not found in this workspace");
     }
+
     // Update project
     const updatedProject = await prisma.project.update({
         where: { id: projectId },
@@ -105,48 +112,47 @@ export async function updateProject(projectId, userId, data) {
     return {
         message: "Project updated successfully",
         project: {
-            id: project.id,
-            name: project.name,
-            description: project.description,
-            workspaceId: project.workspaceId,
-            createdBy: project.createdBy,
-            createdAt: project.createdAt,
-            updatedAt: project.updatedAt
+            id: updatedProject.id,
+            name: updatedProject.name,
+            description: updatedProject.description,
+            workspaceId: updatedProject.workspaceId,
+            createdBy: updatedProject.createdBy,
+            createdAt: updatedProject.createdAt,
+            updatedAt: updatedProject.updatedAt
         }
     };
-
 }
 
-    // Delete Project
-
-    async function deleteProject(workspaceId, userId) {
-    // Check if user is the owner
+export async function deleteProject(workspaceId, projectId, userId) {
+    // Check if user has permission (ADMIN or OWNER)
     const membership = await prisma.workspaceMember.findFirst({
         where: {
-                workspaceId: workspaceId,
-                userId: userId,
-                role: {in: ['OWNER', 'ADMIN']  }
-    }
+            workspaceId: workspaceId,
+            userId: userId,
+            role: { in: ['OWNER', 'ADMIN'] }
+        }
     });
 
     if (!membership) {
         throw new Error("You do not have permission to delete projects in this workspace");
     }
 
+    // Check if project exists in workspace
     const existingProject = await prisma.project.findFirst({
-        where: { 
+        where: {
             id: projectId,
             workspaceId: workspaceId
-         },
+        },
     });
 
     if (!existingProject) {
         throw new Error("Project not found in this workspace");
     }
+
     // Delete project
     await prisma.project.delete({
         where: { id: projectId },
-    }); 
+    });
+
     return { message: "Project deleted successfully" };
 }
-    
