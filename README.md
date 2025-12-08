@@ -2,7 +2,7 @@
 
 A modern, collaborative task management application with workspaces, projects, and real-time task tracking.
 
-## 🏗️ Monorepo Structure
+## Monorepo Structure
 
 ```
 task-manager/
@@ -16,7 +16,7 @@ task-manager/
     └── README.md     # Frontend documentation (coming soon)
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js v18 or higher
@@ -104,7 +104,7 @@ Frontend UI: `http://localhost:5173`
 
 ---
 
-## 🔐 Security Features
+## Security Features
 
 - **JWT Authentication**: Access + refresh token rotation
 - **Password Security**: bcrypt (10 salt rounds), strong validation (8+ chars, uppercase, lowercase, number)
@@ -113,7 +113,7 @@ Frontend UI: `http://localhost:5173`
 
 ---
 
-## 🧪 Testing
+## Testing
 
 **Test Coverage**: 56/58 tests passing (96.6%)
 
