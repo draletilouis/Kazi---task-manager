@@ -1,14 +1,14 @@
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-import taskRoutes from './task.routes.js';
-import * as taskService from './task.service.js';
+import taskRoutes from '../src/modules/tasks/task.routes.js';
+import * as taskService from '../src/modules/tasks/task.service.js';
 
 // Mock the task service
-jest.mock('./task.service.js');
+jest.mock('../src/modules/tasks/task.service.js');
 
 // Mock auth middleware
-jest.mock('../auth/auth.middleware.js', () => ({
+jest.mock('../src/modules/auth/auth.middleware.js', () => ({
     authMiddleware: (req, _res, next) => {
         req.user = { userId: 'test-user-123' };
         next();

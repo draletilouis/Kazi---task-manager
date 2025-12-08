@@ -18,12 +18,12 @@ const mockPrisma = {
 };
 
 // Mock the prisma module before importing the service
-jest.unstable_mockModule('../../database/prisma.js', () => ({
+jest.unstable_mockModule('../src/database/prisma.js', () => ({
     default: mockPrisma,
 }));
 
 // Now import the service after mocking
-const { createTask, getTasks, updateTask, deleteTask } = await import('./task.service.js');
+const { createTask, getTasks, updateTask, deleteTask } = await import('../src/modules/tasks/task.service.js');
 
 describe('Task Service', () => {
     beforeEach(() => {
