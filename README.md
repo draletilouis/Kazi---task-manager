@@ -76,12 +76,23 @@ Built with **Node.js**, **Express**, and **Prisma ORM** — designed for scalabi
 
 ### Pending Features
 
-**🚀 Advanced Features**
-* File attachments
-* Activity logs
-* Real-time updates
-* Task filtering and search
+**🚀 Activity Logs System**
+* Track all user actions (create, update, delete)
+* Activity feed for workspaces and projects
+* User activity history
+* Audit trail for compliance
+* Real-time activity notifications
+
+**🔍 Task Filtering & Search**
+* Filter tasks by status, priority, assignee
+* Search tasks by title and description
+* Advanced query capabilities
+* Saved filters
+
+**📎 Additional Features**
+* File attachments on tasks
 * Task tags/labels
+* Bulk task operations
 
 ---
 
