@@ -1,7 +1,9 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
+import { ToastProvider } from '../context/ToastContext';
 import PrivateRoute from './PrivateRoute';
 import Navbar from '../components/layout/Navbar';
+import Toast from '../components/common/Toast';
 
 // Page imports
 import Login from '../pages/auth/Login';
@@ -15,8 +17,11 @@ import TaskDetail from '../pages/tasks/TaskDetail';
 const RootLayout = () => {
   return (
     <AuthProvider>
-      <Navbar />
-      <Outlet />
+      <ToastProvider>
+        <Navbar />
+        <Outlet />
+        <Toast />
+      </ToastProvider>
     </AuthProvider>
   );
 };

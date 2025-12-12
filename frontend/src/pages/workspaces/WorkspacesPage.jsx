@@ -4,16 +4,18 @@ import WorkspaceCard from '../../components/workspace/WorkspaceCard';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
+import { useToast } from '../../context/ToastContext';
 
 const WorkspacesPage = () => {
-  const { 
-    workspaces, 
-    loading, 
-    error, 
+  const {
+    workspaces,
+    loading,
+    error,
     addWorkspace,
     editWorkspace,
-    removeWorkspace 
+    removeWorkspace
   } = useWorkspaces();
+  const toast = useToast();
 
   // Modal states
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -30,17 +32,18 @@ const WorkspacesPage = () => {
       await addWorkspace(formData);
       setShowCreateModal(false);
       setFormData({ name: '', description: '' });
+      toast.success('Workspace created successfully');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
   // Handle edit workspace
   const handleEditClick = (workspace) => {
     setSelectedWorkspace(workspace);
-    setFormData({ 
-      name: workspace.name, 
-      description: workspace.description || '' 
+    setFormData({
+      name: workspace.name,
+      description: workspace.description || ''
     });
     setShowEditModal(true);
   };
@@ -52,8 +55,9 @@ const WorkspacesPage = () => {
       setShowEditModal(false);
       setFormData({ name: '', description: '' });
       setSelectedWorkspace(null);
+      toast.success('Workspace updated successfully');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -63,8 +67,9 @@ const WorkspacesPage = () => {
     if (window.confirm('Are you sure you want to delete this workspace?')) {
       try {
         await removeWorkspace(workspaceId);
+        toast.success('Workspace deleted successfully');
       } catch (err) {
-        alert(err.message);
+        toast.error(err.message);
       }
     }
   };

@@ -2,18 +2,21 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContextDefinition';
 import CommentForm from './CommentForm';
 import Button from '../common/Button';
+import { useToast } from '../../context/ToastContext';
 
 const CommentList = ({ comments, loading, onEdit, onDelete }) => {
   const { user } = useContext(AuthContext);
   const [editingCommentId, setEditingCommentId] = useState(null);
+  const toast = useToast();
 
   const handleEdit = async (commentId, commentData) => {
     try {
       await onEdit(commentId, commentData);
       setEditingCommentId(null);
+      toast.success('Comment updated successfully');
     } catch (error) {
       console.error('Failed to edit comment:', error);
-      alert('Failed to edit comment: ' + error.message);
+      toast.error('Failed to edit comment: ' + error.message);
     }
   };
 
@@ -24,9 +27,10 @@ const CommentList = ({ comments, loading, onEdit, onDelete }) => {
 
     try {
       await onDelete(commentId);
+      toast.success('Comment deleted successfully');
     } catch (error) {
       console.error('Failed to delete comment:', error);
-      alert('Failed to delete comment: ' + error.message);
+      toast.error('Failed to delete comment: ' + error.message);
     }
   };
 

@@ -4,19 +4,21 @@ import { useState, useEffect } from 'react';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import Spinner from '../../components/common/Spinner';
-import { getWorkspaceMembers, addWorkspaceMember, removeWorkspaceMember } from '../../api/workspaces';
+import { getWorkspace, getWorkspaceMembers, addWorkspaceMember, removeWorkspaceMember } from '../../api/workspaces';
+import { useToast } from '../../context/ToastContext';
 
 const WorkspaceDetail = () => {
   // Get workspaceId from URL
   const { workspaceId } = useParams();
-  
+  const toast = useToast();
+
   // Fetch projects for this workspace
-  const { 
-    projects, 
-    loading, 
-    error, 
+  const {
+    projects,
+    loading,
+    error,
     addProject,
-    removeProject 
+    removeProject
   } = useProjects(workspaceId);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -25,11 +27,34 @@ const WorkspaceDetail = () => {
     description: ''
   });
 
+  // Workspace state
+  const [workspace, setWorkspace] = useState(null);
+  const [loadingWorkspace, setLoadingWorkspace] = useState(true);
+
   // Members state
   const [members, setMembers] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(true);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
+
+  // Fetch workspace details
+  useEffect(() => {
+    const fetchWorkspace = async () => {
+      try {
+        setLoadingWorkspace(true);
+        const data = await getWorkspace(workspaceId);
+        setWorkspace(data);
+      } catch (error) {
+        console.error('Failed to fetch workspace:', error);
+      } finally {
+        setLoadingWorkspace(false);
+      }
+    };
+
+    if (workspaceId) {
+      fetchWorkspace();
+    }
+  }, [workspaceId]);
 
   // Fetch members
   useEffect(() => {
@@ -57,8 +82,9 @@ const WorkspaceDetail = () => {
       await addProject(formData);
       setShowCreateModal(false);
       setFormData({ name: '', description: '' });
+      toast.success('Project created successfully');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -67,8 +93,9 @@ const WorkspaceDetail = () => {
     if (window.confirm('Delete this project?')) {
       try {
         await removeProject(projectId);
+        toast.success('Project deleted successfully');
       } catch (err) {
-        alert(err.message);
+        toast.error(err.message);
       }
     }
   };
@@ -83,8 +110,9 @@ const WorkspaceDetail = () => {
       // Refresh members list
       const data = await getWorkspaceMembers(workspaceId);
       setMembers(data);
+      toast.success('Member invited successfully');
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -96,13 +124,14 @@ const WorkspaceDetail = () => {
         // Refresh members list
         const data = await getWorkspaceMembers(workspaceId);
         setMembers(data);
+        toast.success('Member removed successfully');
       } catch (err) {
-        alert(err.message);
+        toast.error(err.message);
       }
     }
   };
 
-  if (loading) return <Spinner />;
+  if (loading || loadingWorkspace) return <Spinner />;
   if (error) return <div className="text-red-600">Error: {error}</div>;
 
   return (
@@ -113,18 +142,20 @@ const WorkspaceDetail = () => {
           Workspaces
         </Link>
         <span className="mx-2 text-gray-400">/</span>
-        <span className="text-gray-600">Workspace Name</span>
+        <span className="text-gray-600">{workspace?.name || 'Workspace'}</span>
       </nav>
 
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Workspace Name
+            {workspace?.name || 'Workspace'}
           </h1>
-          <p className="text-gray-600 mt-2">
-            Workspace description here
-          </p>
+          {workspace?.description && (
+            <p className="text-gray-600 mt-2">
+              {workspace.description}
+            </p>
+          )}
         </div>
         <Button onClick={() => setShowCreateModal(true)}>
           + New Project

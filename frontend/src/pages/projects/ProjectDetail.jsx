@@ -6,10 +6,12 @@ import TaskBoard from '../../components/task/TaskBoard';
 import Modal from '../../components/common/Modal';
 import TaskForm from '../../components/task/TaskForm';
 import Button from '../../components/common/Button';
+import { useToast } from '../../context/ToastContext';
 
 const ProjectDetail = () => {
   const { workspaceId, projectId } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const { tasks, loading: tasksLoading, error: tasksError, addTask, fetchTasks } = useTasks(workspaceId, projectId);
   const { projects, loading: projectsLoading } = useProjects(workspaceId);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,9 +29,10 @@ const ProjectDetail = () => {
       await addTask(taskData);
       setIsModalOpen(false);
       fetchTasks();
+      toast.success('Task created successfully');
     } catch (error) {
       console.error('Failed to create task:', error);
-      alert('Failed to create task: ' + error.message);
+      toast.error('Failed to create task: ' + error.message);
     }
   };
 

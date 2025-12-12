@@ -10,6 +10,16 @@ export const getWorkspaces = async () => {
   }
 };
 
+// Fetch single workspace by ID
+export const getWorkspace = async (workspaceId) => {
+  try {
+    const response = await apiClient.get(`/workspaces/${workspaceId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Failed to fetch workspace");
+  }
+};
+
 // Create new workspace
 export const createWorkspace = async (workspaceData) => {
   try {

@@ -7,10 +7,12 @@ import TaskForm from '../../components/task/TaskForm';
 import CommentList from '../../components/comment/CommentList';
 import CommentForm from '../../components/comment/CommentForm';
 import Button from '../../components/common/Button';
+import { useToast } from '../../context/ToastContext';
 
 const TaskDetail = () => {
   const { workspaceId, projectId, taskId } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,19 +43,21 @@ const TaskDetail = () => {
       const updated = await updateTask(workspaceId, projectId, taskId, taskData);
       setTask(updated);
       setIsEditModalOpen(false);
+      toast.success('Task updated successfully');
     } catch (error) {
       console.error('Failed to update task:', error);
-      alert('Failed to update task: ' + error.message);
+      toast.error('Failed to update task: ' + error.message);
     }
   };
 
   const handleDeleteTask = async () => {
     try {
       await deleteTask(workspaceId, projectId, taskId);
+      toast.success('Task deleted successfully');
       navigate(`/workspaces/${workspaceId}/projects/${projectId}`);
     } catch (error) {
       console.error('Failed to delete task:', error);
-      alert('Failed to delete task: ' + error.message);
+      toast.error('Failed to delete task: ' + error.message);
     }
   };
 
@@ -64,9 +68,10 @@ const TaskDetail = () => {
         status: newStatus
       });
       setTask(updated);
+      toast.success('Status updated successfully');
     } catch (error) {
       console.error('Failed to update status:', error);
-      alert('Failed to update status: ' + error.message);
+      toast.error('Failed to update status: ' + error.message);
     }
   };
 
@@ -77,18 +82,20 @@ const TaskDetail = () => {
         priority: newPriority
       });
       setTask(updated);
+      toast.success('Priority updated successfully');
     } catch (error) {
       console.error('Failed to update priority:', error);
-      alert('Failed to update priority: ' + error.message);
+      toast.error('Failed to update priority: ' + error.message);
     }
   };
 
   const handleAddComment = async (commentData) => {
     try {
       await addComment(commentData);
+      toast.success('Comment added successfully');
     } catch (error) {
       console.error('Failed to add comment:', error);
-      alert('Failed to add comment: ' + error.message);
+      toast.error('Failed to add comment: ' + error.message);
     }
   };
 

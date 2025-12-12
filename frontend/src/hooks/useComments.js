@@ -46,7 +46,7 @@ export const useComments = (taskId) => {
   // Update existing comment
   const editComment = async (commentId, commentData) => {
     try {
-      const updated = await updateComment(taskId, commentId, commentData);
+      const updated = await updateComment(commentId, commentData);
       setComments(comments.map(c => c.id === commentId ? updated : c));
       return updated;
     } catch (err) {
@@ -57,7 +57,7 @@ export const useComments = (taskId) => {
   // Delete comment
   const removeComment = async (commentId) => {
     try {
-      await deleteComment(taskId, commentId);
+      await deleteComment(commentId);
       setComments(comments.filter(c => c.id !== commentId));
     } catch (err) {
       throw new Error(err.message || 'Failed to delete comment');

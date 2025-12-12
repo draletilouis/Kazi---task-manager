@@ -3,7 +3,7 @@ import apiClient from './client';
 // Fetch all comments for task
 export const getComments = async (taskId) => {
   try {
-    const response = await apiClient.get(`/tasks/${taskId}/comments`);
+    const response = await apiClient.get(`/workspaces/tasks/${taskId}/comments`);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Failed to fetch comments");
@@ -13,7 +13,7 @@ export const getComments = async (taskId) => {
 // Create new comment
 export const createComment = async (taskId, commentData) => {
   try {
-    const response = await apiClient.post(`/tasks/${taskId}/comments`, commentData);
+    const response = await apiClient.post(`/workspaces/tasks/${taskId}/comments`, commentData);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || "Failed to create comment");
@@ -21,10 +21,10 @@ export const createComment = async (taskId, commentData) => {
 };
 
 // Update comment
-export const updateComment = async (taskId, commentId, commentData) => {
+export const updateComment = async (commentId, commentData) => {
   try {
     const response = await apiClient.put(
-      `/tasks/${taskId}/comments/${commentId}`,
+      `/workspaces/comments/${commentId}`,
       commentData
     );
     return response.data;
@@ -34,10 +34,10 @@ export const updateComment = async (taskId, commentId, commentData) => {
 };
 
 // Delete comment
-export const deleteComment = async (taskId, commentId) => {
+export const deleteComment = async (commentId) => {
   try {
     const response = await apiClient.delete(
-      `/tasks/${taskId}/comments/${commentId}`
+      `/workspaces/comments/${commentId}`
     );
     return response.data;
   } catch (error) {
