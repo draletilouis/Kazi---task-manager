@@ -16,7 +16,8 @@ export const useWorkspaces = () => {
     try {
       setLoading(true);
       const data = await getWorkspaces();
-      setWorkspaces(data);
+      // API returns { workspaces: [...] }, extract the array
+      setWorkspaces(data.workspaces || []);
       setError(null);
     } catch (err) {
       setError(err.message || 'Failed to fetch workspaces');

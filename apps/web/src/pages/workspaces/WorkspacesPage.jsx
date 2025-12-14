@@ -145,75 +145,89 @@ const WorkspacesPage = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Workspaces</h1>
-          <p className="text-gray-600 mt-1">
-            Manage your workspaces and projects
-          </p>
-        </div>
-        <Button onClick={() => setShowCreateModal(true)}>
-          + Create Workspace
-        </Button>
-      </div>
-
-      {/* Workspaces grid */}
-      {workspaces.length === 0 ? (
-        // Empty state
-        <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" /* Empty icon */>
-            {/* Icon SVG */}
-          </svg>
-          <h3 className="mt-2 text-lg font-medium text-gray-900">
-            No workspaces yet
-          </h3>
-          <p className="mt-1 text-gray-500">
-            Get started by creating your first workspace
-          </p>
-          <Button
-            onClick={() => setShowCreateModal(true)}
-            className="mt-4"
-          >
-            Create Workspace
-          </Button>
-        </div>
-      ) : (
-        <>
-          {/* Workspace count and items per page selector */}
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-sm text-gray-600">
-              Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, workspaces.length)} of {workspaces.length} workspaces
-            </p>
-            <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-600">Items per page:</label>
-              <select
-                value={itemsPerPage}
-                onChange={(e) => {
-                  setItemsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value={6}>6</option>
-                <option value={9}>9</option>
-                <option value={12}>12</option>
-                <option value={18}>18</option>
-              </select>
+    <div className="min-h-screen bg-gray-50">
+      <div className="w-full px-6 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-4 sm:mb-0">
+              <h1 className="text-3xl font-bold text-gray-900">My Workspaces</h1>
+              <p className="mt-2 text-sm text-gray-600">
+                Organize and manage your work across different workspaces
+              </p>
             </div>
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              New Workspace
+            </Button>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedWorkspaces.map(workspace => (
-              <WorkspaceCard
-                key={workspace.id}
-                workspace={workspace}
-                onEdit={handleEditClick}
-                onDelete={handleDelete}
-              />
-            ))}
+        {/* Workspaces grid */}
+        {workspaces.length === 0 ? (
+          // Empty state
+          <div className="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-300">
+            <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No workspaces yet
+            </h3>
+            <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+              Get started by creating your first workspace to organize your projects and collaborate with your team
+            </p>
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Create Your First Workspace
+            </Button>
           </div>
+        ) : (
+          <>
+            {/* Workspace count and items per page selector */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+              <p className="text-sm font-medium text-gray-700">
+                <span className="text-gray-900">{workspaces.length}</span> {workspaces.length === 1 ? 'workspace' : 'workspaces'}
+              </p>
+              <div className="flex items-center gap-2">
+                <label className="text-sm text-gray-600">Show:</label>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                >
+                  <option value={6}>6 per page</option>
+                  <option value={9}>9 per page</option>
+                  <option value={12}>12 per page</option>
+                  <option value={18}>18 per page</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedWorkspaces.map(workspace => (
+                <WorkspaceCard
+                  key={workspace.id}
+                  workspace={workspace}
+                  onEdit={handleEditClick}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
 
           {/* Pagination Controls */}
           {totalPages > 1 && (
@@ -273,10 +287,11 @@ const WorkspacesPage = () => {
           )}
         </>
       )}
+      </div>
 
       {/* Create Modal */}
       {showCreateModal && (
-        <Modal 
+        <Modal
           onClose={() => setShowCreateModal(false)}
           title="Create Workspace"
         >
@@ -334,7 +349,7 @@ const WorkspacesPage = () => {
 
       {/* Edit Modal */}
       {showEditModal && (
-        <Modal 
+        <Modal
           onClose={() => setShowEditModal(false)}
           title="Edit Workspace"
         >
