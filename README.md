@@ -1,6 +1,6 @@
 # Task Manager - Full Stack Application
 
-A modern, collaborative task management system built with React and Node.js. Features workspaces, projects, tasks with Kanban boards, and real-time collaboration.
+A modern, collaborative task management system built with React and Node.js. Features workspaces, projects, tasks with Kanban boards, and real-time collaboration. [In development]
 
 **Monorepo Architecture** | **JWT Authentication** | **96.5% Test Coverage** | **Modern UI/UX**
 
