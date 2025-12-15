@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContextDefinition';
 import CommentForm from './CommentForm';
+import Button from '../common/Button';
 import { useToast } from '../../context/ToastContext';
 
 const CommentList = ({ comments, loading, onEdit, onDelete }) => {
@@ -39,17 +40,17 @@ const CommentList = ({ comments, loading, onEdit, onDelete }) => {
   };
 
   if (loading) {
-    return <div style={{ color: '#666' }}>Loading comments...</div>;
+    return <div className="text-gray-500">Loading comments...</div>;
   }
 
   if (comments.length === 0) {
-    return <div style={{ color: '#999', textAlign: 'center', padding: '15px' }}>No comments yet. Be the first to comment!</div>;
+    return <div className="text-gray-400 text-center py-4">No comments yet. Be the first to comment!</div>;
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+    <div className="space-y-4">
       {comments.map(comment => (
-        <div key={comment.id} className="card">
+        <div key={comment.id} className="border border-gray-200 rounded-lg p-4">
           {editingCommentId === comment.id ? (
             <CommentForm
               onSubmit={(data) => handleEdit(comment.id, data)}
@@ -58,28 +59,28 @@ const CommentList = ({ comments, loading, onEdit, onDelete }) => {
             />
           ) : (
             <>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+              <div className="flex justify-between items-start mb-2">
                 <div>
-                  <p style={{ fontWeight: '500', margin: 0 }}>
+                  <p className="font-medium text-gray-900">
                     {comment.author?.email || 'Unknown User'}
                   </p>
-                  <p style={{ fontSize: '12px', color: '#666', margin: '2px 0 0 0' }}>
+                  <p className="text-xs text-gray-500">
                     {formatDate(comment.createdAt)}
                     {comment.updatedAt !== comment.createdAt && ' (edited)'}
                   </p>
                 </div>
 
                 {user && comment.author && user.id === comment.author.id && (
-                  <div style={{ display: 'flex', gap: '10px' }}>
+                  <div className="flex gap-2">
                     <button
                       onClick={() => setEditingCommentId(comment.id)}
-                      style={{ fontSize: '14px' }}
+                      className="text-blue-600 hover:text-blue-800 text-sm"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(comment.id)}
-                      style={{ fontSize: '14px', color: '#d32f2f' }}
+                      className="text-red-600 hover:text-red-800 text-sm"
                     >
                       Delete
                     </button>
@@ -87,7 +88,7 @@ const CommentList = ({ comments, loading, onEdit, onDelete }) => {
                 )}
               </div>
 
-              <p style={{ margin: 0, color: '#333' }}>{comment.content}</p>
+              <p className="text-gray-700">{comment.content}</p>
             </>
           )}
         </div>

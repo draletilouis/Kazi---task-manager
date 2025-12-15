@@ -98,35 +98,35 @@ const ProjectDetail = () => {
 
   if (projectsLoading) {
     return (
-      <div style={{ height: '100%', overflowY: 'auto' }}>
-        <div className="container">
-          <div style={{ color: '#666' }}>Loading project...</div>
+      <div className="h-full overflow-y-auto">
+        <div className="container mx-auto p-6">
+          <div className="text-gray-500">Loading project...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ height: '100%', overflowY: 'auto' }}>
-      <div className="container">
+    <div className="h-full overflow-y-auto">
+      <div className="container mx-auto p-6">
       {/* Breadcrumb Navigation */}
-      <nav style={{ fontSize: '14px', marginBottom: '15px', color: '#666' }}>
-        <Link to="/workspaces">Workspaces</Link>
-        <span style={{ margin: '0 8px' }}>/</span>
-        <Link to={`/workspaces/${workspaceId}`}>Workspace</Link>
-        <span style={{ margin: '0 8px' }}>/</span>
-        <span style={{ color: '#333', fontWeight: '500' }}>{currentProject?.name || 'Project'}</span>
+      <nav className="text-sm mb-4 text-gray-600">
+        <Link to="/workspaces" className="hover:text-blue-600">Workspaces</Link>
+        <span className="mx-2">/</span>
+        <Link to={`/workspaces/${workspaceId}`} className="hover:text-blue-600">Workspace</Link>
+        <span className="mx-2">/</span>
+        <span className="text-gray-900 font-medium">{currentProject?.name || 'Project'}</span>
       </nav>
 
       {/* Project Header */}
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div className="mb-6">
+        <div className="flex justify-between items-start">
           <div>
-            <h1 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '10px' }}>
+            <h1 className="text-3xl font-bold text-gray-900">
               {currentProject?.name || 'Project Detail'}
             </h1>
             {currentProject?.description && (
-              <p style={{ color: '#666' }}>{currentProject.description}</p>
+              <p className="text-gray-600 mt-2">{currentProject.description}</p>
             )}
           </div>
           <Button onClick={() => setIsModalOpen(true)}>
@@ -152,19 +152,18 @@ const ProjectDetail = () => {
       />
 
       {/* Create Task Modal */}
-      {isModalOpen && (
-        <Modal
-          onClose={() => setIsModalOpen(false)}
-          title="Create New Task"
-        >
-          <TaskForm
-            onSubmit={handleCreateTask}
-            onCancel={() => setIsModalOpen(false)}
-            workspaceId={workspaceId}
-            projectId={projectId}
-          />
-        </Modal>
-      )}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Create New Task"
+      >
+        <TaskForm
+          onSubmit={handleCreateTask}
+          onCancel={() => setIsModalOpen(false)}
+          workspaceId={workspaceId}
+          projectId={projectId}
+        />
+      </Modal>
       </div>
     </div>
   );

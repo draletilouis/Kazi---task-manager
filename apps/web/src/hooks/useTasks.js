@@ -18,14 +18,10 @@ export const useTasks = (workspaceId, projectId) => {
     try {
       setLoading(true);
       const data = await getTasks(workspaceId, projectId);
-      // Extract tasks array from response object
-      const tasksArray = data?.tasks || data;
-      // Ensure data is always an array
-      setTasks(Array.isArray(tasksArray) ? tasksArray : []);
+      setTasks(data);
       setError(null);
     } catch (err) {
       setError(err.message || 'Failed to fetch tasks');
-      setTasks([]);
     } finally {
       setLoading(false);
     }
@@ -39,8 +35,7 @@ export const useTasks = (workspaceId, projectId) => {
   // Create new task
   const addTask = async (taskData) => {
     try {
-      const response = await createTask(workspaceId, projectId, taskData);
-      const newTask = response?.task || response;
+      const newTask = await createTask(workspaceId, projectId, taskData);
       setTasks([...tasks, newTask]);
       return newTask;
     } catch (err) {
@@ -51,8 +46,7 @@ export const useTasks = (workspaceId, projectId) => {
   // Update existing task
   const editTask = async (taskId, taskData) => {
     try {
-      const response = await updateTask(workspaceId, projectId, taskId, taskData);
-      const updated = response?.task || response;
+      const updated = await updateTask(workspaceId, projectId, taskId, taskData);
       setTasks(tasks.map(t => t.id === taskId ? updated : t));
       return updated;
     } catch (err) {

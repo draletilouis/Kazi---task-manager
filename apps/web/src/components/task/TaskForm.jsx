@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import Button from '../common/Button';
+import Input from '../common/Input';
 import { getWorkspaceMembers } from '../../api/workspaces';
 
 const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
@@ -80,27 +82,23 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* Title */}
       <div>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '5px' }}>
-          Title *
-        </label>
-        <input
-          type="text"
+        <Input
+          label="Title"
           name="title"
           value={formData.title}
           onChange={handleChange}
+          error={errors.title}
           placeholder="Enter task title"
           required
-          style={{ width: '100%' }}
         />
-        {errors.title && <p className="error" style={{ marginTop: '5px' }}>{errors.title}</p>}
       </div>
 
       {/* Description */}
       <div>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '5px' }}>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Description
         </label>
         <textarea
@@ -109,20 +107,20 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
           onChange={handleChange}
           placeholder="Enter task description (optional)"
           rows={4}
-          style={{ width: '100%' }}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Status */}
       <div>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '5px' }}>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Status
         </label>
         <select
           name="status"
           value={formData.status}
           onChange={handleChange}
-          style={{ width: '100%' }}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="TODO">To Do</option>
           <option value="IN_PROGRESS">In Progress</option>
@@ -132,14 +130,14 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
 
       {/* Priority */}
       <div>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '5px' }}>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Priority
         </label>
         <select
           name="priority"
           value={formData.priority}
           onChange={handleChange}
-          style={{ width: '100%' }}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="LOW">Low</option>
           <option value="MEDIUM">Medium</option>
@@ -149,7 +147,7 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
 
       {/* Due Date */}
       <div>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '5px' }}>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Due Date
         </label>
         <input
@@ -157,13 +155,13 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
           name="dueDate"
           value={formData.dueDate}
           onChange={handleChange}
-          style={{ width: '100%' }}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Assignee */}
       <div>
-        <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '5px' }}>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Assignee
         </label>
         <select
@@ -171,7 +169,7 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
           value={formData.assigneeId}
           onChange={handleChange}
           disabled={loadingMembers}
-          style={{ width: '100%' }}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
         >
           <option value="">Unassigned</option>
           {members.map(member => (
@@ -184,21 +182,22 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
 
       {/* Submit Error */}
       {errors.submit && (
-        <div className="error">{errors.submit}</div>
+        <div className="text-red-600 text-sm">{errors.submit}</div>
       )}
 
       {/* Actions */}
-      <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', paddingTop: '15px' }}>
-        <button
+      <div className="flex gap-2 justify-end pt-4">
+        <Button
           type="button"
           onClick={onCancel}
+          variant="secondary"
           disabled={isSubmitting}
         >
           Cancel
-        </button>
-        <button type="submit" disabled={isSubmitting}>
+        </Button>
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Saving...' : initialData ? 'Update Task' : 'Create Task'}
-        </button>
+        </Button>
       </div>
     </form>
   );
