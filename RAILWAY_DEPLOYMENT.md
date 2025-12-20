@@ -40,7 +40,7 @@ This is a monorepo with two services:
 
 **Build Command**:
 ```bash
-npm install && npm run build:api
+npm install && npm run db:generate --workspace=apps/api
 ```
 
 **Start Command**:
@@ -51,8 +51,8 @@ npm run start:api
 **Environment Variables**:
 ```bash
 DATABASE_URL=${{Postgres.DATABASE_URL}}
-JWT_SECRET=your-super-secret-jwt-key-min-32-characters-long
-JWT_REFRESH_SECRET=your-super-secret-refresh-key-min-32-characters-long
+JWT_SECRET=your-generated-secret-here
+JWT_REFRESH_SECRET=your-generated-refresh-secret-here
 NODE_ENV=production
 PORT=${{PORT}}
 FRONTEND_URL=https://your-frontend-url.up.railway.app
@@ -60,6 +60,8 @@ RESEND_API_KEY=re_your_resend_api_key
 EMAIL_FROM=Kazi <onboarding@yourdomain.com>
 APP_URL=https://your-frontend-url.up.railway.app
 ```
+
+**Note:** Generate JWT secrets using: `openssl rand -base64 32`
 
 4. Click "Deploy"
 
