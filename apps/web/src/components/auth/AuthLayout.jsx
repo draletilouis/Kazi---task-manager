@@ -1,5 +1,3 @@
-import logo from '../../assets/kazi_logo.svg';
-
 const AuthLayout = ({ children, title, subtitle, showBranding = true }) => {
   return (
     <div className="h-screen flex overflow-hidden">

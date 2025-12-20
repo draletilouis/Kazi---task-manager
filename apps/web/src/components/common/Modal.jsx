@@ -5,19 +5,24 @@ const Modal = ({
   children,
   onClose,
   title,
+  isOpen = true,
   size = 'md', // 'sm' | 'md' | 'lg' | 'xl'
   showCloseButton = true
 }) => {
   // Prevent body scroll when modal is open
   useEffect(() => {
+    if (!isOpen) return;
+
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, []);
+  }, [isOpen]);
 
   // Close on Escape key
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleEscape = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -26,7 +31,10 @@ const Modal = ({
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
+  }, [isOpen, onClose]);
+
+  // Don't render if not open
+  if (!isOpen) return null;
 
   // Define size styles
   const sizes = {

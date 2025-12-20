@@ -62,9 +62,9 @@ export const removeMemberValidation = [
         .notEmpty().withMessage('Workspace ID is required')
         .isString().withMessage('Workspace ID must be a string'),
 
-    param('userId')
-        .notEmpty().withMessage('User ID is required')
-        .isString().withMessage('User ID must be a string')
+    param('memberId')
+        .notEmpty().withMessage('Member ID is required')
+        .isString().withMessage('Member ID must be a string')
 ];
 
 /**
@@ -75,9 +75,9 @@ export const updateMemberRoleValidation = [
         .notEmpty().withMessage('Workspace ID is required')
         .isString().withMessage('Workspace ID must be a string'),
 
-    param('userId')
-        .notEmpty().withMessage('User ID is required')
-        .isString().withMessage('User ID must be a string'),
+    param('memberId')
+        .notEmpty().withMessage('Member ID is required')
+        .isString().withMessage('Member ID must be a string'),
 
     body('role')
         .notEmpty().withMessage('Role is required')

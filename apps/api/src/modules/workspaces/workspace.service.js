@@ -45,7 +45,13 @@ export async function getWorkspaces(userId) {
     const memberships = await prisma.workspaceMember.findMany({
         where: { userId: userId },
         include: {
-            workspace: true,
+            workspace: {
+                include: {
+                    _count: {
+                        select: { members: true }
+                    }
+                }
+            },
         },
     });
 
@@ -54,10 +60,49 @@ export async function getWorkspaces(userId) {
         name: membership.workspace.name,
         description: membership.workspace.description,
         role: membership.role,
+        memberCount: membership.workspace._count.members,
         createdAt: membership.workspace.createdAt,
     }));
 
     return {workspaces}
+}
+
+/**
+ * Get single workspace by ID
+ */
+export async function getWorkspace(workspaceId, userId) {
+    // Check if user is a member of the workspace
+    const membership = await prisma.workspaceMember.findFirst({
+        where: {
+            workspaceId: workspaceId,
+            userId: userId
+        },
+        include: {
+            workspace: {
+                include: {
+                    _count: {
+                        select: { members: true, projects: true }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!membership) {
+        throw new Error("You do not have access to this workspace");
+    }
+
+    return {
+        workspace: {
+            id: membership.workspace.id,
+            name: membership.workspace.name,
+            description: membership.workspace.description,
+            role: membership.role,
+            memberCount: membership.workspace._count.members,
+            projectCount: membership.workspace._count.projects,
+            createdAt: membership.workspace.createdAt,
+        }
+    };
 }
 
 /**
@@ -266,7 +311,7 @@ export async function removeMember(workspaceId, removerId, memberId) {
     return { message: "Member removed successfully" };
 }
 
-export async function updateMemberRole(workspaceId, updaterId, memberId, newRole) {
+export async function updateMemberRole(workspaceId, updaterId, memberId, role) {
     // Check if updater has owner role
     const updaterMembership = await prisma.workspaceMember.findFirst({
         where: {
@@ -293,7 +338,7 @@ export async function updateMemberRole(workspaceId, updaterId, memberId, newRole
     // Update member role
     const updatedMembership = await prisma.workspaceMember.update({
         where: { id: membership.id },
-        data: { role: newRole }
+        data: { role: role }
     });
     return {
         message: "Member role updated successfully",

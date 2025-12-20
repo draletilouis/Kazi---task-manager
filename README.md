@@ -370,108 +370,15 @@ DELETE /workspaces/comments/:commentId       # Delete comment (owner/ADMIN/OWNER
 
 ---
 
-## Pending Tasks & Roadmap
+## Upcoming Roadmap
 
-### IMPORTANT: Node.js Version Requirement
+### Next 5 Weeks (Starting December 20, 2025)
 
-This project requires **Node.js 20.19+ or 22.12+** due to Vite 7 requirements. If you're using Node.js 20.18.0 or lower, you'll see warnings during build. To upgrade:
-
-**Using nvm (recommended):**
-```bash
-nvm install 20.19
-nvm use 20.19
-```
-
-**Or download directly:**
-- [Node.js 20.x LTS](https://nodejs.org/)
-- [Node.js 22.x Current](https://nodejs.org/)
-
----
-
-### HIGH PRIORITY
-
-#### Infrastructure & DevOps
-- [x] ~~Create `.env.example` files~~ ✅ (Complete with email configuration)
-- [x] ~~Document cloud database options~~ ✅ (Supabase, Neon, Railway documented in README)
-- [ ] Add Docker support (Dockerfile + docker-compose.yml)
-- [ ] Set up CI/CD pipeline (GitHub Actions)
-- [ ] Add health check endpoint (`GET /health`)
-- [ ] Configure environment-specific builds
-
-#### Security Enhancements
-- [ ] Implement rate limiting (express-rate-limit)
-- [x] ~~Add request validation middleware~~ ✅ (express-validator implemented on all routes)
-- [x] ~~Configure CORS~~ (Currently allows all origins - needs production config)
-- [ ] Add helmet.js for security headers
-- [ ] Implement request logging (Winston/Pino)
-- [ ] Add error tracking (Sentry)
-
-#### Testing
-- [x] ~~Add tests for Auth module~~ ✅ (23 service tests + 16 route tests, 100% coverage)
-- [x] ~~Add tests for Workspace module~~ ✅ (27 tests, 100% coverage)
-- [x] ~~Add tests for Project module~~ ✅ (20 tests, 100% coverage)
-- [x] ~~Add tests for Task module~~ ✅ (16 service tests + 15 route tests, 100% coverage)
-- [x] ~~Add tests for Comment module~~ ✅ (12 service tests + 15 route tests, 100% coverage)
-- [ ] Set up frontend testing (Vitest + Testing Library)
-- [ ] Add E2E tests (Playwright/Cypress)
-- [ ] Set up test coverage thresholds in CI
-
-### MEDIUM PRIORITY
-
-#### Features
-- [ ] **Activity Log System** (schema exists, not implemented)
-  - Track all CRUD operations
-  - Activity feed per workspace
-  - User activity history
-  - Audit trail for compliance
-- [ ] Task assignee relation improvements (already in schema)
-- [ ] File attachments for tasks
-- [ ] Rich text editor for task descriptions (TipTap/Quill)
-- [ ] Task tags/labels system
-- [ ] Bulk task operations
-- [x] ~~Email notifications~~ ✅ (Resend integration for password reset & welcome emails)
-- [ ] Export functionality (PDF, CSV)
-
-#### Code Quality
-- [ ] Migrate to TypeScript (gradual)
-- [ ] Add JSDoc comments to backend functions
-- [ ] Consolidate validation utilities (validation.js + validators.js)
-- [ ] Remove unused dependency (@tanstack/react-query)
-- [ ] Add Storybook for component documentation
-- [ ] Set up pre-commit hooks (Husky + lint-staged)
-
-#### Performance
-- [ ] Implement caching layer (Redis)
-- [ ] Add database indexes on foreign keys
-- [ ] Database connection pooling
-- [ ] Implement pagination on all list endpoints
-- [ ] Add lazy loading for frontend routes
-- [ ] Optimize bundle size (code splitting)
-
-### LOW PRIORITY
-
-#### Documentation
-- [ ] Create OpenAPI/Swagger specification
-- [ ] Expand frontend README
-- [ ] Create CONTRIBUTING.md
-- [ ] Create DEPLOYMENT.md
-- [ ] Add architecture diagrams
-- [x] ~~Create email setup guide~~ ✅ (EMAIL_SETUP.md with comprehensive instructions)
-
-#### Developer Experience
-- [ ] Create shared packages (`packages/shared`, `packages/ui`)
-- [ ] Add build optimization (Turborepo/Nx)
-- [ ] Improve error messages
-- [ ] Add development seed data script
-- [ ] Create project templates/generators
-
-#### UI/UX Enhancements
-- [ ] Dark mode support
-- [ ] Accessibility improvements (ARIA labels, keyboard navigation)
-- [ ] Mobile-optimized navigation
-- [ ] Progressive Web App (PWA) support
-- [ ] Offline mode with service workers
-- [ ] Real-time collaboration (WebSockets)
+- **Week 1 (Dec 20-26)**: Docker Support & Deployment Setup
+- **Week 2 (Dec 27-Jan 2)**: Rate Limiting & Security Headers (Helmet.js)
+- **Week 3 (Jan 3-9)**: Frontend Testing Suite (Vitest + Testing Library)
+- **Week 4 (Jan 10-16)**: Activity Log System Implementation
+- **Week 5 (Jan 17-23)**: E2E Testing (Playwright/Cypress)
 
 ---
 

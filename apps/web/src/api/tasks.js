@@ -33,7 +33,7 @@ export const createTask = async (workspaceId, projectId, taskData) => {
     );
     return response.data.task;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Failed to create task");
+    throw new Error(error.response?.data?.message || error.response?.data?.error || "Failed to create task");
   }
 };
 

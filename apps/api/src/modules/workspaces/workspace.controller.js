@@ -24,7 +24,21 @@ export async function getWorkspaces(req, res) {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-}    
+}
+
+/**
+ * Handle getting single workspace
+ */
+export async function getWorkspace(req, res) {
+    try {
+        const userId = req.user.userId;
+        const workspaceId = req.params.workspaceId;
+        const result = await workspaceService.getWorkspace(workspaceId, userId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
 
 /**
  * Handle workspace update
@@ -105,10 +119,10 @@ export async function updateMemberRole(req, res) {
         const updaterId = req.user.userId;
         const workspaceId = req.params.workspaceId;
         const memberId = req.params.memberId;
-        const { newRole } = req.body;
-        const result = await workspaceService.updateMemberRole(workspaceId, updaterId, memberId, newRole);
+        const { role } = req.body;
+        const result = await workspaceService.updateMemberRole(workspaceId, updaterId, memberId, role);
         res.status(200).json(result);
     } catch (error) {
         res.status(400).json({ error: error.message });
-    } 
+    }
 }

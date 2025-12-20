@@ -87,12 +87,13 @@ const ProjectDetail = () => {
   const handleCreateTask = async (taskData) => {
     try {
       await addTask(taskData);
-      setIsModalOpen(false);
-      fetchTasks();
       toast.success('Task created successfully');
+      setIsModalOpen(false);
+      await fetchTasks();
     } catch (error) {
       console.error('Failed to create task:', error);
-      toast.error('Failed to create task: ' + error.message);
+      toast.error(error.message || 'Failed to create task');
+      // Don't close modal on error so user can fix issues
     }
   };
 

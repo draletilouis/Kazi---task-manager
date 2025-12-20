@@ -2,6 +2,7 @@ import { useContext, useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContextDefinition';
 import { User, LogOut, Settings, ChevronDown, LayoutGrid, Search, ChevronRight } from 'lucide-react';
+import SearchModal from '../common/SearchModal';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useContext(AuthContext);
@@ -9,6 +10,7 @@ const Navbar = () => {
   const location = useLocation();
   const params = useParams();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
   const menuRef = useRef(null);
 
   const handleLogout = () => {
@@ -28,6 +30,19 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Handle keyboard shortcut for search (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setShowSearchModal(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Don't show navbar on login/register pages
   if (!isAuthenticated) {
     return null;
@@ -38,8 +53,6 @@ const Navbar = () => {
     if (!user?.email) return 'U';
     return user.email.charAt(0).toUpperCase();
   };
-
-  const isActive = (path) => location.pathname === path;
 
   // Generate breadcrumb based on current route
   const getBreadcrumbs = () => {
@@ -120,20 +133,10 @@ const Navbar = () => {
 
           {/* Right: Search and User Menu */}
           <div className="flex items-center space-x-3">
-            {/* Search Button */}
-            <button
-              className="flex items-center space-x-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={() => {
-                // Placeholder for search functionality
-                console.log('Search clicked');
-              }}
-            >
-              <Search className="w-5 h-5 text-gray-500" />
-              <span className="hidden lg:inline text-sm text-gray-600">Search</span>
-              <kbd className="hidden xl:inline px-2 py-1 text-xs font-semibold text-gray-500 bg-white border border-gray-200 rounded">
-                ⌘K
-              </kbd>
-            </button>
+            {/* Search Component */}
+            <div className="w-80">
+              <SearchModal isOpen={showSearchModal} onClose={() => setShowSearchModal(false)} />
+            </div>
 
             {/* User Menu Dropdown */}
             <div className="relative" ref={menuRef}>

@@ -89,11 +89,15 @@ export const removeWorkspaceMember = async (workspaceId, memberId) => {
 export const updateWorkspaceMemberRole = async (workspaceId, memberId, role) => {
   try {
     const response = await apiClient.put(
-      `/workspaces/${workspaceId}/members/${memberId}`,
+      `/workspaces/${workspaceId}/members/${memberId}/role`,
       { role }
     );
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Failed to update member role");
+    const errorMsg = error.response?.data?.message
+      || error.response?.data?.error
+      || (error.response?.data?.details ? error.response.data.details.map(d => d.message).join(', ') : null)
+      || "Failed to update member role";
+    throw new Error(errorMsg);
   }
 };

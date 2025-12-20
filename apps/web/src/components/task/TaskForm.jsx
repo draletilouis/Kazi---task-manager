@@ -67,22 +67,23 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null, workspaceId }) => {
 
     setIsSubmitting(true);
 
+    const taskData = {
+      title: formData.title,
+      description: formData.description,
+      status: formData.status,
+      priority: formData.priority,
+      dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null,
+      assignedTo: formData.assigneeId || null,
+    };
+
     try {
-      const taskData = {
-        title: formData.title,
-        description: formData.description,
-        status: formData.status,
-        priority: formData.priority,
-        dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null,
-        assignedTo: formData.assigneeId || null,
-      };
       await onSubmit(taskData);
-      // Success - don't reset isSubmitting, let parent component handle it
+      // Success - parent component will close modal and show success message
+      // Don't reset isSubmitting here, modal will unmount
     } catch (error) {
       console.error('Task form error:', error);
-      setErrors({ submit: error.message });
+      setErrors({ submit: error.message || 'Failed to save task' });
       setIsSubmitting(false);
-      throw error; // Re-throw so parent knows about the error
     }
   };
 

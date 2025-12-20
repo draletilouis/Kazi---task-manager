@@ -21,6 +21,9 @@ router.post("/", authMiddleware, createWorkspaceValidation, validate, WorkspaceC
 // Route to get all workspaces for the authenticated user
 router.get("/", authMiddleware, WorkspaceController.getWorkspaces);
 
+// Route to get single workspace by ID
+router.get("/:workspaceId", authMiddleware, workspaceIdValidation, validate, WorkspaceController.getWorkspace);
+
 // Route to update workspace name
 router.put("/:workspaceId", authMiddleware, updateWorkspaceValidation, validate, WorkspaceController.updateWorkspace);
 

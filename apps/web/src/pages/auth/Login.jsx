@@ -86,19 +86,19 @@ const Login = () => {
               })}
               className={`w-full px-4 py-2.5 pr-12 border ${
                 errors.password ? 'border-red-500' : 'border-gray-300'
-              } rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+              } rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all [&::-ms-reveal]:hidden [&::-ms-clear]:hidden`}
               placeholder="Enter your password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
-                <EyeOff className="h-6 w-6" />
+                <EyeOff className="h-5 w-5" key="hide" />
               ) : (
-                <Eye className="h-6 w-6" />
+                <Eye className="h-5 w-5" key="show" />
               )}
             </button>
           </div>
