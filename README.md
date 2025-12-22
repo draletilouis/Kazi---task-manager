@@ -248,14 +248,17 @@ task-manager/
   - Dark themed sidebar with workspace/project tree
   - Clean navbar with Kazi logo and search shortcut (⌘K)
   - Global search modal with keyboard navigation
+  - **Unified full-width layout** across all pages (w-full px-6 py-8)
+  - Consistent bg-gray-50 background throughout
   - Professional spacing and typography
-  - Constrained content width (max-w-6xl) for optimal readability
 - **Component Library**
   - Reusable Button, Modal, Toast components
   - WorkspaceCard with gradient headers and hover effects
   - Skeleton loading states
   - Error boundary for graceful error handling
 - **User Experience**
+  - **Fixed token refresh** - no more random logouts
+  - Intelligent error handling (network vs auth failures)
   - Toast notification system
   - Password strength meter
   - Real-time form validation with error messages
