@@ -42,15 +42,15 @@ const UserProfile = () => {
 
   if (loading) {
     return (
-      <div className="h-full bg-gray-100 flex items-center justify-center">
+      <div className="h-full bg-gray-50 flex items-center justify-center">
         <div className="text-gray-600">Loading profile...</div>
       </div>
     );
   }
 
   return (
-    <div className="h-full overflow-y-auto bg-gray-100">
-      <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="h-full overflow-y-auto bg-gray-50">
+      <div className="w-full px-6 py-8">
         {/* Profile Header */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
           <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-32"></div>

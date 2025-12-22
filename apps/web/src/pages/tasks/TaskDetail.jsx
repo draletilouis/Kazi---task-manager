@@ -133,8 +133,8 @@ const TaskDetail = () => {
 
   if (loading) {
     return (
-      <div className="h-full overflow-y-auto">
-        <div className="container mx-auto p-6">
+      <div className="h-full overflow-y-auto bg-gray-50">
+        <div className="w-full px-6 py-8">
           <div className="text-gray-500">Loading task...</div>
         </div>
       </div>
@@ -143,8 +143,8 @@ const TaskDetail = () => {
 
   if (error) {
     return (
-      <div className="h-full overflow-y-auto">
-        <div className="container mx-auto p-6">
+      <div className="h-full overflow-y-auto bg-gray-50">
+        <div className="w-full px-6 py-8">
           <div className="text-red-600">Error: {error}</div>
         </div>
       </div>
@@ -153,8 +153,8 @@ const TaskDetail = () => {
 
   if (!task) {
     return (
-      <div className="h-full overflow-y-auto">
-        <div className="container mx-auto p-6">
+      <div className="h-full overflow-y-auto bg-gray-50">
+        <div className="w-full px-6 py-8">
           <div className="text-gray-500">Task not found</div>
         </div>
       </div>
@@ -174,8 +174,8 @@ const TaskDetail = () => {
   };
 
   return (
-    <div className="h-full overflow-y-auto">
-      <div className="container mx-auto p-6">
+    <div className="h-full overflow-y-auto bg-gray-50">
+      <div className="w-full px-6 py-8">
       {/* Breadcrumb Navigation */}
       <nav className="text-sm mb-4 text-gray-600">
         <Link to="/workspaces" className="hover:text-blue-600">Workspaces</Link>

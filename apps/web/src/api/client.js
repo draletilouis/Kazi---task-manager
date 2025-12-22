@@ -56,7 +56,7 @@ apiClient.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem("refreshToken");
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/auth/refresh-token`,
+          `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/auth/refresh`,
           { refreshToken }
         );
 
@@ -66,10 +66,13 @@ apiClient.interceptors.response.use(
 
         return apiClient(originalRequest);
       } catch (refreshError) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("user");
-        window.location.href = "/login";
+        // Only redirect if it's actually a refresh token failure (not network issues)
+        if (refreshError.response?.status === 401) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("user");
+          window.location.href = "/login";
+        }
         return Promise.reject(refreshError);
       }
     }
